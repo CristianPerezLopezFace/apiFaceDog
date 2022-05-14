@@ -69,8 +69,6 @@ def aceptarAmigo(notifi:notificacion) :
       user=conexion.conexion.find_one({'email':notifi.idDestino})
       userAmigo=conexion.conexion.find_one({'email':notifi.idUser})
 
-      print(user)
-      print(userAmigo)
       #añadimos el amigo al destinatario
       lista=[]
       for amigo in user["amigos"]:
@@ -79,8 +77,7 @@ def aceptarAmigo(notifi:notificacion) :
       if not lista.__contains__(userAmigo["id"]):
           lista.append(userAmigo["id"])
 
-         
-      print(lista)
+   
       conexion.conexion.update_one({"id":user["id"]}, {"$set": {"amigos":lista}}) 
       
       #añadmos al destinatario a la lista de amigos
@@ -90,7 +87,7 @@ def aceptarAmigo(notifi:notificacion) :
      
       if not lista.__contains__(user["id"]):
           lista.append(user["id"])
-      print(lista)
+      
       conexion.conexion.update_one({"id":userAmigo["id"]}, {"$set": {"amigos":lista}}) 
       conexion.conexion.Notificacion.delete_one({'fecha':notifi.fecha})
       
