@@ -3,6 +3,6 @@ COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 COPY . .
 
-CMD ["uvicorn", "conexion:app", "--host","0.0.0.0","--port","8000","--workers","4"]
+CMD uvicorn conexion:app --reload --host 0.0.0.0 --port $PORT
 
 
