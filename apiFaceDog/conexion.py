@@ -37,7 +37,6 @@ app.include_router(rutasAmigos)
 app.include_router(rutasFotos)
 app.include_router(rutasComentarios)
 app.include_router(rutasEmails)
-app.add_middleware(HTTPSRedirectMiddleware)
 
 
 origins = [
@@ -45,6 +44,7 @@ origins = [
 ]
 app.add_middleware(
     CORSMiddleware,
+    HTTPSRedirectMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
