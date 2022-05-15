@@ -9,7 +9,7 @@ from RUTAS.rutasFotos import rutasFotos
 from fastapi.middleware.cors import CORSMiddleware
 from RUTAS.comentarios import rutasComentarios
 from RUTAS.emails import rutasEmails
-from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+# from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
 try :
 
@@ -43,8 +43,8 @@ origins = [
     "*",
 ]
 app.add_middleware(
-    # CORSMiddleware,
-    HTTPSRedirectMiddleware,
+    CORSMiddleware,
+    # HTTPSRedirectMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
