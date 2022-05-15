@@ -43,7 +43,7 @@ origins = [
     "*",
 ]
 app.add_middleware(
-    CORSMiddleware,
+    # CORSMiddleware,
     HTTPSRedirectMiddleware,
     allow_origins=origins,
     allow_credentials=True,
