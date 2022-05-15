@@ -9,6 +9,8 @@ from RUTAS.rutasFotos import rutasFotos
 from fastapi.middleware.cors import CORSMiddleware
 from RUTAS.comentarios import rutasComentarios
 from RUTAS.emails import rutasEmails
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+
 try :
 
     mongo_client_nube = "mongodb+srv://Practica:DAM@cluster0.fkixc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
@@ -35,6 +37,8 @@ app.include_router(rutasAmigos)
 app.include_router(rutasFotos)
 app.include_router(rutasComentarios)
 app.include_router(rutasEmails)
+app.add_middleware(HTTPSRedirectMiddleware)
+
 
 origins = [
     "*",

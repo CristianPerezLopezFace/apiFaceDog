@@ -113,11 +113,8 @@ def get_one_user_by_id(id: int, token_user=Depends(my_token.auth_wrapper)):
 
         user: UserModel
         user = conexion.conexion.find_one({"id": id}, {"amigos": 0, "foto": 0,"habilitado":0})
-        if not user:
-            raise HTTPException(
-                status_code=404, detail="User not found by email")
-        else:
-            return user
+     
+        return user
 
     except MultipleInvalid as e:
         raise HTTPException(status_code=400, detail=str(e))
