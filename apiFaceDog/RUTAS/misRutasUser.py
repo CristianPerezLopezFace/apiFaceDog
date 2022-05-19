@@ -53,8 +53,12 @@ def create_user(user: UserModel):
     # try:
         userExits = conexion.conexion.find_one({"email": user.email})
         if not userExits:
-            result = conexion.conexion.find().sort("id", pymongo.DESCENDING)
-            id_max = result[0].get("id")
+            try : 
+                result = conexion.conexion.find().sort("id", pymongo.DESCENDING)
+                id_max = result[0].get("id")
+            
+            except Exception :
+                id_max = 1
             newUser = dict(user)
             newUser.update({'id_fotos': user.email})
             newUser.update({'id': (int(id_max)+1)})
@@ -127,7 +131,7 @@ def get_one_user_by_id(id: int, token_user=Depends(my_token.auth_wrapper)):
     tags=["Users"],
     response_model = []
 )
-def getAllUsers() :
+def getAllUsers(token_user=Depends(my_token.auth_wrapper)) :
     amigosList=[]
     amigos=conexion.conexion.find({},{"_id":0,"amigos":0,"surName":0,"password":0,"roles":0,"email":0,"habilitado":0})
     for amigo in amigos :
@@ -140,7 +144,7 @@ def getAllUsers() :
     tags=["All_Users"],
     response_model={}
 )
-def find_all_users(skip: int, limit: int, rol: str):
+def find_all_users(skip: int, limit: int, rol: str, token_user=Depends(my_token.auth_wrapper)):
     try:
         lista = []
         users = conexion.conexion.find(
@@ -200,7 +204,7 @@ def delete_user(id: int,  token_user=Depends(my_token.auth_wrapper)):
     tags=["Users"],
     response_model=[]
 )
-def getAllUsers():
+def getAllUsers( token_user=Depends(my_token.auth_wrapper)):
     veterinarioList = []
     amigos = conexion.conexion.find({"roles": "Veterinario"}, {
                                     "_id": 0, "amigos": 0, "surName": 0, "password": 0, "roles": 0})
@@ -223,7 +227,7 @@ def enviarEmail(email:str) :
                         <h2 style="text-align:center; margin-button:3.5rem">Confirma tu cuenta de face dog</h2>
                         <center>
                             
-                            <a href="https://apifacedog.herokuapp.com/confirmarEmail/?email="""+email+"""" style="background-color: #ffbe4587;padding: 1rem 1.5rem;border-radius: 2rem;color: black;text-decoration: none;font-weight: bold;letter-spacing: 0.5px;margin-left:2rem;">Pincha aqui para confirmar tu cuenta</a>
+                            <a href="https://facedogapirest.herokuapp.com/confirmarEmail/?email="""+email+"""" style="background-color: #ffbe4587;padding: 1rem 1.5rem;border-radius: 2rem;color: black;text-decoration: none;font-weight: bold;letter-spacing: 0.5px;margin-left:2rem;">Pincha aqui para confirmar tu cuenta</a>
                            
                         
                         </center>

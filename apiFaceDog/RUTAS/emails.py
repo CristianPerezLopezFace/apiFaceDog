@@ -30,7 +30,7 @@ def enviarEmail(email:str) :
                         <h2 style="text-align:center; margin-button:3.5rem">Confirma tu cuenta de face dog</h2>
                         <center>
                             
-                            <a href="https://apifacedog.herokuapp.com/confirmarEmail/?email="""+email+"""">Pincha aqui para confirmar tu cuenta</a>
+                            <a href="https://facedogapirest.herokuapp.com/confirmarEmail/?email="""+email+"""">Pincha aqui para confirmar tu cuenta</a>
                            
                         
                         </center>
@@ -65,7 +65,7 @@ def confirmarEmail(email:str):
                     <body>
                             <h1>Cuenta confirmada</h1>
                             <script>
-                                window.location.replace("http://localhost:4200")
+                                window.location.replace("https://facedog-933a5.web.app/")
                             </script>
                     </body>
                 </html>

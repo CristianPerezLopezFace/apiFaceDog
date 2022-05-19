@@ -5,7 +5,7 @@ from fastapi.routing import APIRouter
 from models import UserModel
 from models import imgModel,comentario
 from models import comentario
-
+import my_token
 from models import notificacion
 import conexion
 
@@ -18,7 +18,7 @@ rutasComentarios = APIRouter()
     '/crearComentario',
     tags=["Comentarios"]
 )
-def crearComentario(comen : comentario) :
+def crearComentario(comen : comentario, token_user=Depends(my_token.auth_wrapper)) :
     imagen:imgModel=conexion.conexion.FOTOS.find({"id":comen.idFoto},{"_id":0})
     
     comentUser=[]
@@ -41,7 +41,7 @@ def crearComentario(comen : comentario) :
     tags=["Comentarios"],
     response_model = []
 )
-def getAll(id:str) : 
+def getAll(id:str, token_user=Depends(my_token.auth_wrapper)) : 
     imagen=conexion.conexion.FOTOS.find({"id":id},{"_id":0}) 
     listaComentarios=[]
     for comen in imagen[0]["comentarios"] :    
@@ -53,7 +53,7 @@ def getAll(id:str) :
     tags=["Comentarios"],
     response_model = []
 )
-def get_one(id:str,id_cometario:int) : 
+def get_one(id:str,id_cometario:int, token_user=Depends(my_token.auth_wrapper)) : 
     imagen=conexion.conexion.FOTOS.find({"id":id},{"_id":0}) 
     
     for comen in imagen[0]["comentarios"] :    
@@ -72,7 +72,7 @@ def get_one(id:str,id_cometario:int) :
     '/actualeNotices/{email}',
     tags=["Comentarios"]
 )   
-def getActualNotice(email:str):
+def getActualNotice(email:str, token_user=Depends(my_token.auth_wrapper)):
     user=conexion.conexion.find_one({'email':email})
     listaTodo=[]  
     # for amigo in user["amigos"]:
@@ -93,10 +93,12 @@ def getActualNotice(email:str):
     '/borrarNotificacionComentario',
     tags=["Comentarios"]
 )
-def borrarNotificacion(notifi:notificacion) :
+def borrarNotificacion(notifi:notificacion, token_user=Depends(my_token.auth_wrapper)) :
      
-     
+      print(notifi)
       conexion.conexion.Notificacion.delete_one({'fecha':notifi.fecha,'tipo':notifi.tipo,'idUser':notifi.idUser})
+    
+      print(notifi)
       
       return "ok"
 

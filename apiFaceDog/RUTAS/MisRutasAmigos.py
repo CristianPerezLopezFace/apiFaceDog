@@ -19,7 +19,7 @@ rutasAmigos = APIRouter()
     tags=["Amigos"],
     response_model = []
 )
-def getAll(email :str) : 
+def getAll(email :str, token_user=Depends(my_token.auth_wrapper)) : 
    
     email = email.replace(" ", "")
     user=conexion.conexion.find_one({"email":email})
@@ -34,7 +34,7 @@ def getAll(email :str) :
     '/crearNotificacion',
     tags=["Amigos"]
 )
-def crearNotificacion(notifi : notificacion) :
+def crearNotificacion(notifi : notificacion, token_user=Depends(my_token.auth_wrapper)) :
 
     newNoti:notificacion={
         "idUser":notifi.idUser,
@@ -52,7 +52,7 @@ def crearNotificacion(notifi : notificacion) :
     tags=["Amigos"],
     response_model=[]
 )
-def getNotificacion(email:str) :
+def getNotificacion(email:str, token_user=Depends(my_token.auth_wrapper)) :
       lista=[]
       user=conexion.conexion.find_one({'email':email})
       respuesta=conexion.conexion.Notificacion.find({'idDestino':user["email"]},{"_id":0})
@@ -65,7 +65,7 @@ def getNotificacion(email:str) :
     '/aceptarAmigo',
     tags=["Amigos"]
 )
-def aceptarAmigo(notifi:notificacion) :
+def aceptarAmigo(notifi:notificacion, token_user=Depends(my_token.auth_wrapper)) :
       user=conexion.conexion.find_one({'email':notifi.idDestino})
       userAmigo=conexion.conexion.find_one({'email':notifi.idUser})
 

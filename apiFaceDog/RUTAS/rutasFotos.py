@@ -17,12 +17,15 @@ rutasFotos = APIRouter()
     tags=["Fotos"]
 )
 
-def create_img(img:imgModel) :
+def create_img(img:imgModel, token_user=Depends(my_token.auth_wrapper)) :
     
     
     try : 
-        result=conexion.conexion.FOTOS.find().sort("id",pymongo.DESCENDING)
-        id_max= result[0].get("id")
+        try : 
+            result=conexion.conexion.FOTOS.find().sort("id",pymongo.DESCENDING)
+            id_max= result[0].get("id")
+        except Exception :
+                id_max = 1
         newImg=dict(img)
         newImg.update({
             "id":int(id_max)+1,
@@ -31,6 +34,7 @@ def create_img(img:imgModel) :
         })
         
         conexion.conexion.FOTOS.insert_one(newImg)
+      
         return "todo ok"
     except MultipleInvalid as e: 
         raise  HTTPException(status_code=500,detail="error type data: "+str(e))
@@ -66,7 +70,7 @@ def  getImage(id:int, token_user = Depends(my_token.auth_wrapper)) :
     response_model=[],
     tags=["Fotos"]
     )
-def  getAllImag(nameEmail:str) : 
+def  getAllImag(nameEmail:str, token_user=Depends(my_token.auth_wrapper)) : 
     
     imagen=conexion.conexion.FOTOS.find({"email":nameEmail,"tipo":"user"},{"_id":0})
     listaImg=[]
@@ -82,7 +86,7 @@ def  getAllImag(nameEmail:str) :
     response_model=[],
     tags=["Fotos"]
     )
-def  getAllImag(nameEmail:str) : 
+def  getAllImag(nameEmail:str, token_user=Depends(my_token.auth_wrapper)) : 
     
     imagen=conexion.conexion.FOTOS.find({"email":nameEmail,"tipo":"user"},{"_id":0})
     listaImg=[]
@@ -98,7 +102,7 @@ def  getAllImag(nameEmail:str) :
      response_model=[],
     tags=["imagenes paginados"]
 )
-def find_all_users(skip:int,limit:int,email:str) : 
+def find_all_users(skip:int,limit:int,email:str, token_user=Depends(my_token.auth_wrapper)) : 
     try :
         imagenes=conexion.conexion.FOTOS.find({"email":email},{"_id":0}).skip(skip).limit(limit)
         listaImg=[]
@@ -119,7 +123,7 @@ def find_all_users(skip:int,limit:int,email:str) :
     response_model=[],
     tags=["Fotos"]
     )
-def  getAllImagVeter() : 
+def  getAllImagVeter(token_user=Depends(my_token.auth_wrapper)) : 
     
     imagen=conexion.conexion.FOTOS.find({"tipo":"veterinario"},{"_id":0})
     listaImg=[]
@@ -133,7 +137,7 @@ def  getAllImagVeter() :
     response_model=[],
     tags=["Fotos"]
     )
-def  getAllImagVeterByUser(email:str) : 
+def  getAllImagVeterByUser(email:str, token_user=Depends(my_token.auth_wrapper)) : 
     
     imagen=conexion.conexion.FOTOS.find({"tipo":"veterinario","email":email},{"_id":0})
     listaImg=[]
@@ -147,7 +151,7 @@ def  getAllImagVeterByUser(email:str) :
     tags=["Fotos"]
     )
     
-def  updateImgPrincipal(foto:imgModel) : 
+def  updateImgPrincipal(foto:imgModel, token_user=Depends(my_token.auth_wrapper)) : 
     
     
     oldImg:imgModel= conexion.conexion.FOTOS.find_one({"email":foto.email,"principal":1},{"_id":0})
@@ -167,7 +171,7 @@ def  updateImgPrincipal(foto:imgModel) :
     tags=["Fotos"]
     )
     
-def  updateImg(foto:imgModel) : 
+def  updateImg(foto:imgModel, token_user=Depends(my_token.auth_wrapper)) : 
    
     
     conexion.conexion.FOTOS .update_one({"id":foto.id},{"$set": {"titulo":foto.titulo,"descripcion":foto.descripcion,"fechaModificacion":foto.fechaModificacion}})
@@ -187,7 +191,7 @@ def  updateImg(foto:imgModel) :
     '/users/addLike/{id_foto}/{id_user}',
     tags=["Fotos"]
     )
-def  likeFoto(id_foto:int,id_user:int) : 
+def  likeFoto(id_foto:int,id_user:int, token_user=Depends(my_token.auth_wrapper)) : 
     
     oldImg:imgModel= conexion.conexion.FOTOS.find_one({"id":id_foto},{"_id":0})
   
