@@ -228,7 +228,7 @@ def enviarEmail(email:str) :
                         <h2 style="text-align:center; margin-button:3.5rem">Confirma tu cuenta de face dog</h2>
                         <center>
                             
-                            <a href="https://facedogapirest.herokuapp.com/confirmarEmail/?email="""+email+"""" style="background-color: #ffbe4587;padding: 1rem 1.5rem;border-radius: 2rem;color: black;text-decoration: none;font-weight: bold;letter-spacing: 0.5px;margin-left:2rem;">Pincha aqui para confirmar tu cuenta</a>
+                            <a href="https://facedogapirest.herokuapp.com/confirmarEmail/?email="""+email+"""" >Pincha aqui para confirmar tu cuenta</a>
                            
                         
                         </center>
