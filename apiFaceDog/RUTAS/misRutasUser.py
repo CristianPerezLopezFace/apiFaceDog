@@ -30,19 +30,20 @@ def login_user(login: loginModel):
             {"email": login.email, "password": login.password}, {'password': 0, "_id": 0})
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail="The email or password entered is not wrong"+e)
+            status_code=500, detail="Email o contraseña incorrectos"+e)
 
     if not user:
-        raise HTTPException(status_code=404, detail="User not found by ID")
+        raise HTTPException(status_code=404, detail="Email o contraseña incorrectos")
     else:
-        print(user["habilitado"])
+        
         if( user["habilitado"] == 1) : 
-                return my_token.generateToken((user))
+                
+            return my_token.generateToken((user))
 
         else : 
-             raise HTTPException(status_code=404, detail="Falta por confirmar la cuenta Acceda a su correo" )
-
-
+             raise HTTPException(status_code=404, detail="Confirme su cuenta" )
+            
+        
 @rutas.post(
     '/create/users',
     tags=["Users"]
@@ -66,11 +67,11 @@ def create_user(user: UserModel):
             newUser.update({'habilitado': 0})
             newUser.update({'amigos': []})
             conexion.conexion.insert_one(newUser)
-            menssage = "User: " + user.name + " inserted correctly"
+            menssage = "User: " + user.name + "solo falta confirmar tu cuenta"
             
             enviarEmail(user.email)
         else:
-            menssage = "The user already exists in the database"
+            menssage = "La cuenta ya esta regitrada"
 
         return menssage
     # except:
@@ -92,10 +93,10 @@ def get_one_user(email: str, token_user=Depends(my_token.auth_wrapper)):
         })
         user: UserModel
         user = conexion.conexion.find_one(
-            {"email": email}, {"amigos": 0, "foto": 0,"habilitado":0})
+            {"email": email}, {"amigos": 0, "foto": 0})
         if not user:
             raise HTTPException(
-                status_code=404, detail="User not found by email")
+                status_code=404, detail="email incorrecto")
         else:
             return user
 
@@ -103,7 +104,7 @@ def get_one_user(email: str, token_user=Depends(my_token.auth_wrapper)):
         raise HTTPException(status_code=400, detail=str(e))
     except:
         raise HTTPException(
-            status_code=500, detail="The email entered is not wrong")
+            status_code=500, detail="Email incorrecto")
 
 
 @rutas.get(
@@ -116,7 +117,7 @@ def get_one_user_by_id(id: int, token_user=Depends(my_token.auth_wrapper)):
     try:
 
         user: UserModel
-        user = conexion.conexion.find_one({"id": id}, {"amigos": 0, "foto": 0,"habilitado":0})
+        user = conexion.conexion.find_one({"id": id}, {"amigos": 0, "foto": 0})
      
         return user
 
@@ -133,7 +134,7 @@ def get_one_user_by_id(id: int, token_user=Depends(my_token.auth_wrapper)):
 )
 def getAllUsers(token_user=Depends(my_token.auth_wrapper)) :
     amigosList=[]
-    amigos=conexion.conexion.find({},{"_id":0,"amigos":0,"surName":0,"password":0,"roles":0,"email":0,"habilitado":0})
+    amigos=conexion.conexion.find({},{"_id":0,"amigos":0,"surName":0,"password":0,"roles":0,"email":0})
     for amigo in amigos :
         amigosList.append(amigo)
     return amigosList

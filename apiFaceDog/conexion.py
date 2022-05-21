@@ -39,13 +39,15 @@ app.include_router(rutasComentarios)
 app.include_router(rutasEmails)
 
 
+    # "https://facedog-933a5.web.app/",
+    # "http://localhost:4200"
 origins = [
-    "*",
+    "*"
 ]
 app.add_middleware(
     CORSMiddleware,
     # HTTPSRedirectMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

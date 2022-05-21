@@ -64,6 +64,21 @@ def  getImage(id:int, token_user = Depends(my_token.auth_wrapper)) :
     
     return imagen
 
+@rutasFotos.get(
+    '/users/nombresLikes/id/{id}',
+    response_model=[],
+    tags=["Fotos"]
+    )
+def  getNombresLikes(id:int, token_user = Depends(my_token.auth_wrapper)) : 
+    
+        imagen:imgModel=conexion.conexion.FOTOS.find_one({"id":id},{"_id":0})
+        nombres = []
+        for id in imagen["likes"]: 
+            user:UserModel=conexion.conexion.find_one({"id":id},{"_id":0})
+            nombres.append(user["name"])
+        return nombres
+    
+ 
 
 @rutasFotos.get(
     '/users/allImagen/{nameEmail}',

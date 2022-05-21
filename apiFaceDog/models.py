@@ -16,6 +16,7 @@ class UserModel(BaseModel) :
     email : str
     roles : str
     descripcion:str
+    habilitado:int
 
 class comentario(BaseModel):
     id:int
@@ -53,7 +54,7 @@ class loginModel(BaseModel):
     password:str
 
 class amigo(BaseModel):
-    id :str
+    id :int
     name:str
     descripcion:str
     foto:str

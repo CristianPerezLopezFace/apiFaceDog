@@ -14,7 +14,7 @@ rutasEmails = APIRouter()
 
 
 @rutasEmails.get(
-    '/email',
+    '/email/{email}',
     tags=["Fotos"]
 )
 
@@ -49,6 +49,7 @@ def enviarEmail(email:str) :
     with  smtplib.SMTP_SSL("smtp.gmail.com",465, context=ssl.create_default_context()) as server :
         server.login('faceDogAPP@gmail.com',"gxgztpeclklvnvaq")
         server.sendmail('faceDogAPP@gmail.com',email,mensaje.as_string() )
+    return True
 
 
 @rutasEmails.get('/confirmarEmail/',

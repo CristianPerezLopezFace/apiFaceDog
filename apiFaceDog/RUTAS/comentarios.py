@@ -72,34 +72,24 @@ def get_one(id:str,id_cometario:int, token_user=Depends(my_token.auth_wrapper)) 
     '/actualeNotices/{email}',
     tags=["Comentarios"]
 )   
-def getActualNotice(email:str, token_user=Depends(my_token.auth_wrapper)):
-    user=conexion.conexion.find_one({'email':email})
+def getFotosAmigos(email:str, token_user=Depends(my_token.auth_wrapper)):
     listaTodo=[]  
-    # for amigo in user["amigos"]:
-        
-        # frien=conexion.conexion.find_one({'id':amigo})
-     
-        # emailfriend=frien["email"]
-       
     listaInd=conexion.conexion.Fotos.find({'email':email})
     for foto in listaInd:
-        print(foto)
+
         listaTodo.append(foto)
     
     return listaTodo
 
 
 @rutasComentarios.post(
-    '/borrarNotificacionComentario',
+    '/borrarNotificacionComentario/',
     tags=["Comentarios"]
 )
 def borrarNotificacion(notifi:notificacion, token_user=Depends(my_token.auth_wrapper)) :
      
-      print(notifi)
       conexion.conexion.Notificacion.delete_one({'fecha':notifi.fecha,'tipo':notifi.tipo,'idUser':notifi.idUser})
-    
-      print(notifi)
-      
+
       return "ok"
 
 
