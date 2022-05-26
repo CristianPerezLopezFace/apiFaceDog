@@ -29,19 +29,14 @@ def enviarEmail(email:str) :
                         </center>
                         <h2 style="text-align:center; margin-button:3.5rem">Confirma tu cuenta de face dog</h2>
                         <center>
-                            
-                            <a href="https://facedogapirest.herokuapp.com/confirmarEmail/?email="""+email+"""">Pincha aqui para confirmar tu cuenta</a>
-                           
-                        
+                       
+                            <a href="https://facedogapirest.herokuapp.com/confirmarEmail/?email="""+email+"""">Pincha aqui para confirmar tu cuenta</a>                       
                         </center>
                         </center>
                     </div>
                 </body>
             
             </html>"""
-
-    
-
     mensaje = MIMEMultipart('alternative')
     mensaje['Subject'] = "Confirmar cuenta FaceDog "
     mensaje.attach(MIMEText(html,'html'))

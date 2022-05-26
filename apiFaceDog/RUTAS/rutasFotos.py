@@ -65,17 +65,29 @@ def  getImage(id:int, token_user = Depends(my_token.auth_wrapper)) :
     return imagen
 
 @rutasFotos.get(
-    '/users/nombresLikes/id/{id}',
+    '/users/nombresLikes/id/{id_img}',
     response_model=[],
     tags=["Fotos"]
     )
-def  getNombresLikes(id:int, token_user = Depends(my_token.auth_wrapper)) : 
-    
-        imagen:imgModel=conexion.conexion.FOTOS.find_one({"id":id},{"_id":0})
+def  getNombresLikes(id_img:int, token_user = Depends(my_token.auth_wrapper)) : 
+        #buscamos la imagen por id 
+        imagen:imgModel=conexion.conexion.FOTOS.find_one({"id":id_img},{"_id":0})
         nombres = []
-        for id in imagen["likes"]: 
-            user:UserModel=conexion.conexion.find_one({"id":id},{"_id":0})
-            nombres.append(user["name"])
+        #por cada id en el array de likes buscamos el usuario
+        for id_user in imagen["likes"]: 
+            user:UserModel=conexion.conexion.find_one({"id":id_user},{"_id":0})
+            #en caso de encontrar el usuario lo añadimos a la lista de amigos 
+            if user :
+              
+                nombres.append(user)
+            else : 
+            #en caso contrario actualiamos la lista de likes para borrar ese id ya que es un usuario borrado
+                lista_likes=[]
+                #volvemos a añadir a todos los likes
+                for like in imagen["likes"]:
+                        lista_likes.append(like)
+                lista_likes.remove(id_user)
+                conexion.conexion.FOTOS.update_one({"id":id_img}, {"$set": {"likes":lista_likes}}) 
         return nombres
     
  

@@ -85,7 +85,6 @@ def create_user(user: UserModel):
     response_model=UserModel
 )
 def get_one_user(email: str, token_user=Depends(my_token.auth_wrapper)):
-
     email = email.replace(" ", "")
     try:
         schemas.schema_Get_User({
@@ -99,12 +98,9 @@ def get_one_user(email: str, token_user=Depends(my_token.auth_wrapper)):
                 status_code=404, detail="email incorrecto")
         else:
             return user
-
     except MultipleInvalid as e:
         raise HTTPException(status_code=400, detail=str(e))
-    except:
-        raise HTTPException(
-            status_code=500, detail="Email incorrecto")
+   
 
 
 @rutas.get(
@@ -149,7 +145,7 @@ def find_all_users(skip: int, limit: int, rol: str, token_user=Depends(my_token.
     try:
         lista = []
         users = conexion.conexion.find(
-            {"roles": rol}, {"_id": 0,"habilitado":0}).skip(skip).limit(limit)
+            {"roles": rol}, {"_id": 0}).skip(skip).limit(limit)
         for user in users:
             lista.append(user)
         total: int = conexion.conexion.count()
@@ -213,6 +209,7 @@ def getAllUsers( token_user=Depends(my_token.auth_wrapper)):
     for amigo in amigos:
 
         veterinarioList.append(amigo)
+    print(veterinarioList)
     return veterinarioList
 
 
