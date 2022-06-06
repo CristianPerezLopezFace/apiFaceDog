@@ -16,7 +16,8 @@ try :
     mongo_client_nube = "mongodb+srv://Practica:DAM@cluster0.fkixc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
     mongo_client_local = "mongodb+srv://Cristian:root@cluster0.1wun7.mongodb.net/test"
     client = pymongo.MongoClient(mongo_client_local)   
-    database = client["FACEDOG"]
+    # database = client["FACEDOG"]
+    database = client["FaceDog2"]
     conexion = database["USERS"]  
     
    
